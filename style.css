@@ -1,0 +1,109 @@
+/*****************************************************
+general
+******************************************************/
+
+body {
+    background: white;
+    font-family: open sans;
+    font-size: 14px;
+    position: relative;
+    height: 100vh;
+    font-weight: 500; 
+}
+
+/****************************************************
+header
+*****************************************************/
+.top {
+    height: 30vh;
+    background-image: url(tausta.jpg); 
+
+}
+
+.todo-top {
+    background: blue; 
+    position: absolute;
+    width: 350px; 
+    top: 10%;
+    left: 40%;
+}
+
+.todo-title {
+    background: green; 
+    font-size: 20px;
+    text-align: center; 
+    margin-bottom: 5px; 
+    font-weight: 900; 
+}
+
+.date {
+    background: yellow; 
+    font-weight: 600; 
+    font-size: 15px;
+    text-align: center;
+    margin-bottom: 5px;
+    letter-spacing: 2px;
+
+}
+
+.todo-input {
+    background: red; 
+    text-align: center;
+    font-weight: 500;
+    font-size: 13px;
+    letter-spacing: 2px;
+    margin-bottom: 10px; 
+}
+
+.add-task {
+    padding: 5px;
+    background: white;
+    border: 1px;
+    border: solid 1px antiquewhite; 
+    border-radius: 2px; 
+
+}
+
+.add-btn {
+    font-size: 20px; 
+    background: white;
+    border-radius: 19px; 
+    border: none; 
+    color: aqua; 
+    cursor: progress; 
+    vertical-align: middle; 
+    line-height: 1.1; 
+}
+
+/***********************************************
+task listing
+************************************************/
+.tasks {
+    background: hotpink; 
+    width: 1000px; 
+}
+
+.unfinished-tasks {
+    background: hotpink;
+    width: 400px;
+    margin-right: 5px; 
+    margin-left: 15%; 
+    float: left; 
+}
+
+.task-list {
+    background: pink; 
+    font-size: 15px; 
+}
+
+.finished-tasks {
+    width: 400px; 
+    float: left; 
+    background: turquoise; 
+}
+
+h2 {
+    text-transform: uppercase;
+    font-size: 18px; 
+    font-weight: 400; 
+}
