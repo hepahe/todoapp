@@ -16,7 +16,7 @@ let UIActions = (function() {
         }, getListTask: function(obj) {
             let html, newHtml, element;
             //html with placeholders
-            html = '<div class="task clearfix" id="unfinished-&id&"><div class="task value">%value%</div><div class="task-finish-btn"><button class="task-finish-btn">v</button></div><div class="btn-delete"><button class="task-delete-btn">x</button></div></div>'
+            html = '<div class="task clearfix" id="unfinished-&id&"><div class="task value">%value%</div><div class="task-finish-btn"><button class="task-finish-btn">v</button></div></div>'
             element = DOMStrings.unfinishedTasksList;
             //replace placeholders with data
 

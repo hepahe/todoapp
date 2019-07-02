@@ -1,6 +1,9 @@
 /*****************************************************
 general
 ******************************************************/
+* {
+    box-sizing: border-box;
+}
 
 body {
     background: white;
@@ -78,18 +81,32 @@ header
 /***********************************************
 task listing
 ************************************************/
-.tasks {
-    background: hotpink; 
+.tasks { /*remove?*/
     width: 1000px; 
+    margin: 60px auto;
 }
 
 .unfinished-tasks {
     background: hotpink;
     width: 400px;
+    padding-bottom: 5px;
     margin-right: 5px; 
     margin-left: 15%; 
     float: left; 
 }
+
+.task {
+    padding: 0;
+    border-bottom: solid 1px; 
+}
+.task:first-child { 
+    background-color: red;} /*first task color details*/
+.task:nth-child(even) { background-color: green;} /*second task color details*/
+
+.task-value {
+    float:left;
+}
+
 
 .unfinished-task-list {
     background: pink; 
@@ -97,6 +114,7 @@ task listing
 }
 
 .finished-task-list {
+    text-align: center;
     background: pink; 
     font-size: 15px; 
 }
@@ -111,4 +129,49 @@ h2 {
     text-transform: uppercase;
     font-size: 18px; 
     font-weight: 400; 
+}
+
+.task {
+    padding: 10px; 
+    float: center;
+    position: relative;
+    display: block;
+
+}
+
+.task-value {
+    float:left; 
+}
+
+.clearfix {
+    background: purple; 
+    border: 1px solid; 
+    
+}
+
+.task-finish-btn {
+    font-size: 20px; 
+    background: white;
+    border-radius: 20px; 
+    border: none; 
+    color: aqua; 
+    cursor: progress; 
+    line-height: 1.1; 
+    position: absolute;
+    top: 25%; 
+    right: 5px; 
+
+}
+
+.task-delete-btn {
+    font-size: 20px; 
+    background: white;
+    border-radius: 20px; 
+    border: none; 
+    color: aqua; 
+    cursor: progress; 
+    line-height: 1.1; 
+    position: absolute;
+    top: 5px; 
+    right: 35px; 
 }
