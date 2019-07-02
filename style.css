@@ -91,7 +91,12 @@ task listing
     float: left; 
 }
 
-.task-list {
+.unfinished-task-list {
+    background: pink; 
+    font-size: 15px; 
+}
+
+.finished-task-list {
     background: pink; 
     font-size: 15px; 
 }

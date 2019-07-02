@@ -1,7 +1,9 @@
 let UIActions = (function() {
     let DOMStrings = {
         inputValue: '.add-task',
-        inputButton: '.add-btn'
+        inputButton: '.add-btn',
+        unfinishedTasksList: '.unfinished-task-list',
+        finishedTasksList: '.finished-task-list'
     }
 
     return {
@@ -11,6 +13,19 @@ let UIActions = (function() {
             }
         }, getDOMStrings: function(){
             return DOMStrings;
+        }, getListTask: function(obj) {
+            let html, newHtml, element;
+            //html with placeholders
+            html = '<div class="task clearfix" id="unfinished-&id&"><div class="task value">%value%</div><div class="task-finish-btn"><button class="task-finish-btn">v</button></div><div class="btn-delete"><button class="task-delete-btn">x</button></div></div>'
+            element = DOMStrings.unfinishedTasksList;
+            //replace placeholders with data
+
+            newHtml = html.replace('%id%',obj.id);
+            newHtml = newHtml.replace('%value%', obj.value);
+            let test = obj.value;
+            //insert html into DOM
+
+            document.querySelector(element).insertAdjacentHTML('afterend',newHtml);
         }    
     }
 
@@ -58,7 +73,7 @@ let dataChanges = (function() {
             return newTask;
         }, 
         testing: function() {
-            console.log(data.allTasks);
+            console.log(data.allTasks.unfinishedTask);
         }
     }
     
@@ -81,8 +96,9 @@ let events = (function(UIActs, dataChngs) {
 
     // get input
     let addBtn = function () {
-        let value = UIActs.getInput();
-        dataChngs.addTask(value);
+        let value = UIActs.getInput().value;
+        let newTask = dataChngs.addTask(value);
+        let gettask = UIActs.getListTask(newTask);
     }
     return {
         init: function() {
