@@ -3,15 +3,19 @@ general
 ******************************************************/
 * {
     box-sizing: border-box;
+
 }
 
 body {
+    margin: 0;
+    padding: 0; 
     background: white;
-    font-family: open sans;
+    font-family: 'Roboto', sans-serif;
     font-size: 14px;
     position: relative;
     height: 100vh;
     font-weight: 500; 
+    
 }
 
 /****************************************************
@@ -19,28 +23,31 @@ header
 *****************************************************/
 .top {
     height: 30vh;
-    background-image: url(tausta.jpg); 
-
+    background-image: url(tausta1.jpg); 
+    background-size: cover;
+    background-position: center;
+    position: relative;
 }
 
 .todo-top {
-    background: blue; 
+    background: none; 
     position: absolute;
-    width: 350px; 
-    top: 10%;
-    left: 40%;
+    width: 700px; 
+    top: 30%;
+    left: 30%;
+    
 }
 
 .todo-title {
-    background: green; 
-    font-size: 20px;
+    background: none; 
+    font-size: 30px;
     text-align: center; 
     margin-bottom: 5px; 
     font-weight: 900; 
 }
 
 .date {
-    background: yellow; 
+    background: none; 
     font-weight: 600; 
     font-size: 15px;
     text-align: center;
@@ -50,13 +57,23 @@ header
 }
 
 .todo-input {
-    background: red; 
+    background: none; 
     text-align: center;
     font-weight: 500;
     font-size: 13px;
-    letter-spacing: 2px;
-    margin-bottom: 10px; 
+    letter-spacing: 2px; 
 }
+
+input[type=text] {
+    background: rgba(243, 243, 247, 0.363); 
+    width: 90%;
+    padding: 12px 20px;
+    margin: 8px 0;
+    box-sizing: border-box;
+    border: none; 
+    outline: none; 
+}
+
 
 .add-task {
     padding: 5px;
@@ -69,10 +86,10 @@ header
 
 .add-btn {
     font-size: 20px; 
-    background: white;
+    background: white; opacity: 0.8;
     border-radius: 19px; 
     border: none; 
-    color: aqua; 
+    color: hotpink; 
     cursor: progress; 
     vertical-align: middle; 
     line-height: 1.1; 
@@ -86,43 +103,34 @@ task listing
     margin: 60px auto;
 }
 
-.unfinished-tasks {
-    background: hotpink;
-    width: 400px;
-    padding-bottom: 5px;
-    margin-right: 5px; 
-    margin-left: 15%; 
-    float: left; 
-}
+/*applying to both columns*/
 
-.task {
-    padding: 0;
-    border-bottom: solid 1px; 
-}
-.task:first-child { 
-    background-color: red;} /*first task color details*/
-.task:nth-child(even) { background-color: green;} /*second task color details*/
+.task:nth-child(even) { /*defines bg of uneven tasks*/
+    background-color: lightgray;
+} 
 
-.task-value {
-    float:left;
-}
-
-
-.unfinished-task-list {
-    background: pink; 
+.unfinished-task-list { /*defines bg of even tasks*/
+    background: whitesmoke; 
     font-size: 15px; 
 }
+
+.task { /* defines task blocks*/
+    padding: 10px; 
+    float: center;
+    position: relative;
+    display: block;
+
+}
+.guide { /* defines instruction box features*/
+    padding: 5px; 
+    text-align: center;
+}
+
 
 .finished-task-list {
     text-align: center;
     background: pink; 
     font-size: 15px; 
-}
-
-.finished-tasks {
-    width: 400px; 
-    float: left; 
-    background: turquoise; 
 }
 
 h2 {
@@ -131,25 +139,24 @@ h2 {
     font-weight: 400; 
 }
 
-.task {
-    padding: 10px; 
-    float: center;
-    position: relative;
-    display: block;
+/*unfinished tasks column*/
 
+.unfinished-tasks { /* header + bottom border*/
+    background: rgb(253, 10, 132);
+    width: 400px;
+    padding-bottom: 5px;
+    margin-right: 5px; 
+    margin-left: 15%; 
+    float: left; 
+    text-align: center;
 }
 
-.task-value {
-    float:left; 
+.unfinished-task-guide { /* defines the details of the instruction header*/
+    background: grey; 
+    height: 5vh;
 }
 
-.clearfix {
-    background: purple; 
-    border: 1px solid; 
-    
-}
-
-.task-finish-btn {
+.task-finish-btn { /* finish task button features */
     font-size: 20px; 
     background: white;
     border-radius: 20px; 
@@ -163,7 +170,22 @@ h2 {
 
 }
 
-.task-delete-btn {
+/*finished task column*/
+
+.finished-tasks { /* header + bottom border of finished tasks*/
+    width: 400px; 
+    float: left; 
+    background: turquoise; 
+    padding-bottom: 5px; 
+    text-align: center;
+}
+
+.finished-task-guide { /* defines details of the instruction header */
+    background: grey; 
+    height: 5vh;
+}
+
+.task-delete-btn { /* delete task button features*/
     font-size: 20px; 
     background: white;
     border-radius: 20px; 

@@ -25,7 +25,7 @@ let UIActions = (function() {
             let test = obj.value;
             //insert html into DOM
 
-            document.querySelector(element).insertAdjacentHTML('afterend',newHtml);
+            document.querySelector(element).insertAdjacentHTML('beforeend',newHtml);
         }, emptyInputField: function() {
             let field, fieldArr;  
             DOMStrings.inputValue.value = "";
@@ -103,12 +103,19 @@ let events = (function(UIActs, dataChngs) {
         })
     }
 
-    // get input & empty fields 
     let addBtn = function () {
+
+        //get input 
         let value = UIActs.getInput().value;
-        let newTask = dataChngs.addTask(value);
-        let gettask = UIActs.getListTask(newTask);
-        UIActs.emptyInputField();
+
+        if (value !== "") {
+            // add task
+            let newTask = dataChngs.addTask(value);
+            let gettask = UIActs.getListTask(newTask);
+
+            //empty input field 
+            UIActs.emptyInputField();
+        }
     }
     return {
         init: function() {
