@@ -26,6 +26,14 @@ let UIActions = (function() {
             //insert html into DOM
 
             document.querySelector(element).insertAdjacentHTML('afterend',newHtml);
+        }, emptyInputField: function() {
+            let field, fieldArr;  
+            DOMStrings.inputValue.value = "";
+            field = document.querySelectorAll(DOMStrings.inputValue);
+            fieldArr = Array.prototype.slice.call(field);
+            fieldArr.forEach(function(current,i,arr){
+                current.value = "";
+            });
         }    
     }
 
@@ -86,6 +94,7 @@ let dataChanges = (function() {
 let events = (function(UIActs, dataChngs) {
     let setEventHandler = function() {
         let DOMString = UIActs.getDOMStrings();
+        document.querySelector(DOMString.inputValue).focus();
         document.querySelector(DOMString.inputButton).addEventListener('click', addBtn);
         document.addEventListener('keypress', function(e) {
             if (e.keyCode === 13 || e.which ===13) {
@@ -94,11 +103,12 @@ let events = (function(UIActs, dataChngs) {
         })
     }
 
-    // get input
+    // get input & empty fields 
     let addBtn = function () {
         let value = UIActs.getInput().value;
         let newTask = dataChngs.addTask(value);
         let gettask = UIActs.getListTask(newTask);
+        UIActs.emptyInputField();
     }
     return {
         init: function() {
