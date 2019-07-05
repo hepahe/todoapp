@@ -3,7 +3,8 @@ let UIActions = (function() {
         inputValue: '.add-task',
         inputButton: '.add-btn',
         unfinishedTasksList: '.unfinished-task-list',
-        finishedTasksList: '.finished-task-list'
+        finishedTasksList: '.finished-task-list',
+        container: '.unfinished-tasks'
     }
 
     return {
@@ -16,16 +17,20 @@ let UIActions = (function() {
         }, getListTask: function(obj) {
             let html, newHtml, element;
             //html with placeholders
-            html = '<div class="task clearfix" id="unfinished-&id&"><div class="task value">%value%</div><div class="task-finish-btn"><button class="task-finish-btn">v</button></div></div>'
+            html = '<div class="task clearfix" id="unfinished-%id%"><div class="task value">%value%</div><div class="task-finish-btn"><button class="task-finish-btn">v</button></div></div>'
             element = DOMStrings.unfinishedTasksList;
             //replace placeholders with data
-
             newHtml = html.replace('%id%',obj.id);
             newHtml = newHtml.replace('%value%', obj.value);
             let test = obj.value;
             //insert html into DOM
 
             document.querySelector(element).insertAdjacentHTML('beforeend',newHtml);
+        }, 
+        deleteTaskItem: function (id) {
+            let el = document.getElementById(id);
+            el.parentNode.removeChild(el);
+            
         }, emptyInputField: function() {
             let field, fieldArr;  
             DOMStrings.inputValue.value = "";
@@ -79,7 +84,16 @@ let dataChanges = (function() {
 
             //return the new task
             return newTask;
-        }, 
+        }, deleteTask: function(id) {
+            let ids = data.allTasks.unfinishedTask.map(function(current){
+                return current.id;
+            });
+
+            let i = ids.indexOf(id);
+            if (i !== -1) {
+                data.allTasks.unfinishedTask.splice(i,1);
+            }
+        },
         testing: function() {
             console.log(data.allTasks.unfinishedTask);
         }
@@ -101,6 +115,8 @@ let events = (function(UIActs, dataChngs) {
                 addBtn();
             }
         })
+
+        document.querySelector(DOMString.container).addEventListener('click', deleteTask);
     }
 
     let addBtn = function () {
@@ -115,6 +131,25 @@ let events = (function(UIActs, dataChngs) {
 
             //empty input field 
             UIActs.emptyInputField();
+        }
+    };
+    let markTaskAsFinished = function(event) {
+        
+    }
+
+    let deleteTask = function (event) {
+
+        let itemID = event.target.parentNode.parentNode.id;
+            if (itemID) {
+                let splitID = itemID.split('-');
+                let targetID = parseInt(splitID[1]);
+                
+                //delete task from data structure 
+                dataChngs.deleteTask(targetID);
+
+                //delete task from UI
+
+                UIActs.deleteTaskItem(itemID);
         }
     }
     return {
