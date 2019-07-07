@@ -4,7 +4,8 @@ let UIActions = (function() {
         inputButton: '.add-btn',
         unfinishedTasksList: '.unfinished-task-list',
         finishedTasksList: '.finished-task-list',
-        container: '.unfinished-tasks'
+        container: '.unfinished-tasks',
+        finishedContainer: '.finished-tasks'
     }
 
     return {
@@ -14,20 +15,30 @@ let UIActions = (function() {
             }
         }, getDOMStrings: function(){
             return DOMStrings;
-        }, getListTask: function(obj) {
+        }, getListTask: function(listType,obj) {
             let html, newHtml, element;
             //html with placeholders
-            html = '<div class="task clearfix" id="unfinished-%id%"><div class="task value">%value%</div><div class="task-finish-btn"><button class="task-finish-btn">v</button></div></div>'
-            element = DOMStrings.unfinishedTasksList;
-            //replace placeholders with data
-            newHtml = html.replace('%id%',obj.id);
-            newHtml = newHtml.replace('%value%', obj.value);
-            let test = obj.value;
-            //insert html into DOM
+            
+            if (listType === 'unfinished') {
+                html = '<div class="task clearfix" id="unfinished-%id%"><div class="task value">%value%</div><div class="task-finish-btn"><button class="task-finish-btn">v</button></div></div>'
+                element = DOMStrings.unfinishedTasksList;
+                //replace placeholders with data
+                newHtml = html.replace('%id%',obj.id);
+                newHtml = newHtml.replace('%value%', obj.value);
+                let test = obj.value;
+                //insert html into DOM
 
-            document.querySelector(element).insertAdjacentHTML('beforeend',newHtml);
+                document.querySelector(element).insertAdjacentHTML('beforeend',newHtml);
+            } else if (listType === 'finished') {
+                
+                html = '<div class="task clearfix" id="finished-%id%"><div class="task value">%value%</div><div class="task-delete-btn"><button class="task-delete-btn">x</button></div></div>';
+                element = DOMStrings.finishedTasksList; 
+                newHtml = html.replace('%id%',obj.id);
+                newHtml = newHtml.replace('%value%', obj.value);
+                document.querySelector(element).insertAdjacentHTML('beforeend',newHtml);
+            }
         }, 
-        deleteTaskItem: function (id) {
+        deleteTaskItem: function (id) {             
             let el = document.getElementById(id);
             el.parentNode.removeChild(el);
             
@@ -67,7 +78,7 @@ let dataChanges = (function() {
     }; 
 
     return {
-        addTask: function(value) {
+        addTask: function(listType, value) {
             var newTask, id;
 
             //create new id
@@ -77,25 +88,65 @@ let dataChanges = (function() {
             } else {
                 id = 0; 
             } 
-            //create new task 
-            newTask = new UnfininishedTask(id,value);
-            //add new task to array
-            data.allTasks.unfinishedTask.push(newTask);
+            if (listType === 'unfinished') {
+                //create new task 
+                newTask = new UnfininishedTask(id,value);
+                //add new task to array
+                data.allTasks.unfinishedTask.push(newTask);
+            } else if (listType === 'finished') {
+                //create new finished task
+                newTask = new FininishedTask(id,value);
+                //add new task to array
+                data.allTasks.finishedTask.push(newTask);
+            }
 
             //return the new task
             return newTask;
-        }, deleteTask: function(id) {
-            let ids = data.allTasks.unfinishedTask.map(function(current){
+        }, addTaskToFinished: function(description) {
+            var newTask, id; 
+
+
+        }, copyTaskDescription: function(id) {
+            let description;
+            let ids = data.allTasks.unfinishedTask.map(function (current) {
+                return current.id; 
+            });
+
+            let i = ids.indexOf(id);
+            if (i !== -1) {
+                description = data.allTasks.unfinishedTask[i].value;
+            }
+            return description;
+
+
+        }, getTargetId: function(taskID) {
+            let targetID;
+            // copy task description 
+            if (taskID) {
+                let splitTaskID = taskID.split('-');
+                targetID = parseInt(splitTaskID[1]);
+            }
+            return targetID;
+        }, 
+        
+        deleteTask: function(listType, id) {
+            if (listType === 'unfinished') {
+                listType = data.allTasks.unfinishedTask; 
+            } else if (listType === 'finished') {
+                listType = data.allTasks.finishedTask;
+            }
+
+            let ids = listType.map(function(current){
                 return current.id;
             });
 
             let i = ids.indexOf(id);
             if (i !== -1) {
-                data.allTasks.unfinishedTask.splice(i,1);
+                listType.splice(i,1);
             }
         },
         testing: function() {
-            console.log(data.allTasks.unfinishedTask);
+            console.log(data);
         }
     }
     
@@ -116,7 +167,8 @@ let events = (function(UIActs, dataChngs) {
             }
         })
 
-        document.querySelector(DOMString.container).addEventListener('click', deleteTask);
+        document.querySelector(DOMString.container).addEventListener('click',markTaskAsFinished);
+        document.querySelector(DOMString.finishedContainer).addEventListener('click', deleteTask);
     }
 
     let addBtn = function () {
@@ -126,26 +178,48 @@ let events = (function(UIActs, dataChngs) {
 
         if (value !== "") {
             // add task
-            let newTask = dataChngs.addTask(value);
-            let gettask = UIActs.getListTask(newTask);
+            let newTask = dataChngs.addTask('unfinished', value);
+            let gettask = UIActs.getListTask('unfinished', newTask);
 
             //empty input field 
             UIActs.emptyInputField();
         }
-    };
-    let markTaskAsFinished = function(event) {
+    }; 
+    let markTaskAsFinished = function() {
+        let taskID = event.target.parentNode.parentNode.id; 
+        
+        //get targetID
+        let targetID = dataChngs.getTargetId(taskID);
+        
+        //copy task description
+        let value = dataChngs.copyTaskDescription(targetID);
+
+        // delete task from unfinished tasks
+        
+        dataChanges.deleteTask('unfinished', targetID);
+
+        //delete task from UI 
+
+        UIActs.deleteTaskItem(taskID);
+
+        // add task to finished tasks 
+
+        let newTask = dataChanges.addTask('finished',value);
+        //update UI 
+
+        UIActs.getListTask('finished', newTask);
         
     }
 
-    let deleteTask = function (event) {
-
+    let deleteTask = function () {
+        
         let itemID = event.target.parentNode.parentNode.id;
             if (itemID) {
                 let splitID = itemID.split('-');
                 let targetID = parseInt(splitID[1]);
                 
                 //delete task from data structure 
-                dataChngs.deleteTask(targetID);
+                dataChngs.deleteTask('finished', targetID);
 
                 //delete task from UI
 

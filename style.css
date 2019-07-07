@@ -156,7 +156,7 @@ h2 {
     height: 5vh;
 }
 
-.task-finish-btn { /* finish task button features */
+.task-finish-btn, .task-delete-btn { /* finish task button features */
     font-size: 20px; 
     background: white;
     border-radius: 20px; 
@@ -183,17 +183,4 @@ h2 {
 .finished-task-guide { /* defines details of the instruction header */
     background: grey; 
     height: 5vh;
-}
-
-.task-delete-btn { /* delete task button features*/
-    font-size: 20px; 
-    background: white;
-    border-radius: 20px; 
-    border: none; 
-    color: aqua; 
-    cursor: progress; 
-    line-height: 1.1; 
-    position: absolute;
-    top: 5px; 
-    right: 35px; 
 }
